@@ -71,9 +71,25 @@ public class MinHeap<T> where T : IComparable<T>
     /// </summary>
     public T ExtractMax()
     {
-        return default;
-    }
+        if (IsEmpty) throw new InvalidOperationException();
+        int largest = 0;
+        for (int i=0; i<Count; i++)
+        {
+            if (array[i].CompareTo(array[largest]) > 0)
+            {
+                largest = i;
+            }
+        }
+        T maxValue = array[largest];
 
+        array[largest] = array[Count - 1];
+        Count--;
+
+        TrickleUp(largest);
+        TrickleDown(largest);
+
+        return maxValue;
+    }
     // TODO
     /// <summary>
     /// Removes and returns the min item in the min-heap.
@@ -125,27 +141,28 @@ public class MinHeap<T> where T : IComparable<T>
     /// </summary>
     public void Update(T oldValue, T newValue)
     {
-        if (!array.Contains(oldValue))
+        if (IsEmpty)
         {
             throw new InvalidOperationException();
         }
         // find the node to update - O(n)
-        int index = 0;
+        int index = -1;
         for (int i = 0; i < Count; i++)
         {
-        // update value - O(1)
+            // update value - O(1)
             if (array[i].CompareTo(oldValue) == 0)
             {
                 index = i;
                 break;
             }
         }
+        if (index == -1) throw new InvalidOperationException();
         array[index] = newValue;
 
         // trickle up or trickle down - O( log(n) )
         TrickleUp(index);
         TrickleDown(index);
-                
+
     }
 
     // TODO
@@ -155,25 +172,33 @@ public class MinHeap<T> where T : IComparable<T>
     /// </summary>
     public void Remove(T value)
     {
-        var root = array[0];
-        var lastItem = array[Count-1];
-        for (int i=0; i < array.Length; i++)
+        if (IsEmpty)
+            throw new InvalidOperationException();
+
+        int index = -1;
+
+        // Find the value
+        for (int i = 0; i < Count; i++)
         {
-        // find the node to remove
             if (array[i].CompareTo(value) == 0)
             {
-            // swap with last
-                array[Count] = root;
-                array[0] = lastItem;
-                TrickleDown(i);
-                TrickleUp(i);
-                Count--;
+                index = i;
+                break;
             }
         }
 
-        // trickleX
+        if (index == -1)
+            throw new InvalidOperationException();
+
+        // Replace removed node with last element
+        array[index] = array[Count - 1];
 
         // Count--
+        Count--;
+
+        // trickleX
+        TrickleUp(index);
+        TrickleDown(index);
 
     }
 
@@ -182,36 +207,36 @@ public class MinHeap<T> where T : IComparable<T>
     private void TrickleUp(int index)
     {
         while (index > 0)
-    {
-        int parent = Parent(index);
+        {
+            int parent = Parent(index);
 
-        if (array[index].CompareTo(array[parent]) >= 0)
-            break;
+            if (array[index].CompareTo(array[parent]) >= 0)
+                break;
 
-        Swap(index, parent);
-        index = parent;
-    }
+            Swap(index, parent);
+            index = parent;
+        }
     }
 
     // TODO
     // Time Complexity: O( log n )
     private void TrickleDown(int index)
     {
-       while (LeftChild(index) < Count)
-    {
-        int left = LeftChild(index);
-        int right = RightChild(index);
-        int smallest = left;
+        while (LeftChild(index) < Count)
+        {
+            int left = LeftChild(index);
+            int right = RightChild(index);
+            int smallest = left;
 
-        if (right < Count && array[right].CompareTo(array[left]) < 0)
-            smallest = right;
+            if (right < Count && array[right].CompareTo(array[left]) < 0)
+                smallest = right;
 
-        if (array[index].CompareTo(array[smallest]) <= 0)
-            break;
+            if (array[index].CompareTo(array[smallest]) <= 0)
+                break;
 
-        Swap(index, smallest);
-        index = smallest;
-    }
+            Swap(index, smallest);
+            index = smallest;
+        }
     }
 
     // TODO
