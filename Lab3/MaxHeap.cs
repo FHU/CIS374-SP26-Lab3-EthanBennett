@@ -2,9 +2,9 @@
 
 namespace Lab3;
 
-public class MaxHeap<T> where T: IComparable<T>
+public class MaxHeap<T> where T : IComparable<T>
 {
-	private T[] array;
+    private T[] array;
     private const int initialSize = 8;
 
     public int Count { get; private set; }
@@ -44,14 +44,15 @@ public class MaxHeap<T> where T: IComparable<T>
     /// </summary>
     public void Add(T item)
     {
-        array[Count] = item;
-        TrickleUp(Count);
-        Count++;
-
         if (Count == Capacity)
         {
             DoubleArrayCapacity();
         }
+
+        array[Count] = item;
+        TrickleUp(Count);
+        Count++;
+
 
     }
 
@@ -68,22 +69,22 @@ public class MaxHeap<T> where T: IComparable<T>
     {
         if (IsEmpty)
         {
-            throw new IndexOutOfRangeException();
+            throw new InvalidOperationException();
         }
-        // save min from the root
-        T min = array[0];
+        // save max from the root
+        T max = array[0];
 
-        // swap the min with the last item
+        // swap the max with the last item
         array[0] = array[Count - 1];
 
         //remove the last item
-        Count--; 
+        Count--;
 
         // trickle down from the root
         TrickleDown(0);
 
-        // return the min
-        return min;
+        // return the max
+        return max;
     }
 
     // TODO
@@ -93,7 +94,24 @@ public class MaxHeap<T> where T: IComparable<T>
     /// </summary>
     public T ExtractMin()
     {
-        throw new NotImplementedException();
+        if (IsEmpty) throw new InvalidOperationException();
+        int min = 0;
+        for (int i = 0; i < Count; i++)
+        {
+            if (array[i].CompareTo(array[min]) < 0)
+            {
+                min = i;
+            }
+        }
+        T maxValue = array[min];
+
+        array[min] = array[Count - 1];
+        Count--;
+
+        TrickleUp(min);
+        TrickleDown(min);
+
+        return maxValue;
     }
 
     /// <summary>
@@ -119,26 +137,26 @@ public class MaxHeap<T> where T: IComparable<T>
     /// </summary>
     public void Update(T oldValue, T newValue)
     {
-        // find the node to update - O(n)
-        for (int i = 0; i < array.Length; i++)
+        if (IsEmpty)
         {
-            var parent = Parent(i);
-        // update value - O(1)
+            throw new InvalidOperationException();
+        }
+        // find the node to update - O(n)
+        for (int i = 0; i < Count; i++)
+        {
             if (array[i].CompareTo(oldValue) == 0)
             {
                 array[i] = newValue;
 
-                if (array[i].CompareTo(array[parent]) > 0)
-                {
+                if (i > 0 && array[i].CompareTo(array[Parent(i)]) > 0)
                     TrickleUp(i);
-                }
-                if (array[i].CompareTo(array[parent]) < 0)
-                {
+                else
                     TrickleDown(i);
-                }
-                else return;
+
+                return;
             }
         }
+        throw new InvalidOperationException();
 
         // trickle up or trickle down - O( log(n) )
     }
@@ -150,18 +168,23 @@ public class MaxHeap<T> where T: IComparable<T>
     /// </summary>
     public void Remove(T value)
     {
-        var root = array[0];
-        var lastItem = array[Count];
-        for (int i=0; i < array.Length; i++)
+        if (IsEmpty)
         {
-        // find the node to remove
+            throw new InvalidOperationException();
+        }
+        for (int i = 0; i < Count; i++)
+        {
             if (array[i].CompareTo(value) == 0)
             {
-            // swap with last
-                array[Count] = root;
-                array[0] = lastItem;
-                TrickleDown(i);
+                array[i] = array[Count - 1];
                 Count--;
+
+                if (i > 0 && array[i].CompareTo(array[Parent(i)]) > 0)
+                    TrickleUp(i);
+                else
+                    TrickleDown(i);
+
+                return;
             }
         }
 
@@ -175,14 +198,15 @@ public class MaxHeap<T> where T: IComparable<T>
     // Time Complexity: O( log n )
     private void TrickleUp(int index)
     {
-        var parent = Parent(index);
-        if (array[index].CompareTo(array[parent]) > 0)
+        while (index > 0)
         {
-            return;
-        }
-        else
-        {
+            int parent = Parent(index);
+
+            if (array[index].CompareTo(array[parent]) <= 0)
+                break;
+
             Swap(index, parent);
+            index = parent;
         }
     }
 
@@ -190,16 +214,27 @@ public class MaxHeap<T> where T: IComparable<T>
     // Time Complexity: O( log n )
     private void TrickleDown(int index)
     {
-        var parent = Parent(index);
-        if (array[index].CompareTo(array[parent]) < 0)
+
+        while (true)
         {
-            return;
-        }
-        else
-        {
-            Swap(index, parent);
+            int left = LeftChild(index);
+            int right = RightChild(index);
+            int largest = index;
+
+            if (left < Count && array[left].CompareTo(array[largest]) > 0)
+                largest = left;
+
+            if (right < Count && array[right].CompareTo(array[largest]) > 0)
+                largest = right;
+
+            if (largest == index)
+                break;
+
+            Swap(index, largest);
+            index = largest;
         }
     }
+
 
     // TODO
     /// <summary>

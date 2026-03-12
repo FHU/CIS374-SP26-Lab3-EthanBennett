@@ -5,48 +5,60 @@ class Program
 {
     static void Main(string[] args)
     {
-        MinHeap<int> heap0 = new MinHeap<int>();
-            heap0.Add(160);
-            heap0.Add(130);
-            heap0.Add(100);
-            heap0.Add(90);
-            heap0.Add(60);
+        MaxHeap<int> heap1 = new MaxHeap<int>();
 
-            heap0.Update(60, 65);
-            System.Console.WriteLine(heap0.Count);
-            System.Console.WriteLine(heap0.Contains(60));
-            System.Console.WriteLine(heap0.Contains(65));
-            // Assert.AreEqual(5, heap0.Count);
-            // Assert.IsFalse(heap0.Contains(60));
-            // Assert.IsTrue(heap0.Contains(65));
+            heap1.Add(4);
+            heap1.Add(3);
+            heap1.Add(2);
+            heap1.Add(1);
+            heap1.Add(0);
+            System.Console.WriteLine(heap1.Count + " Should be 5");
+            // Assert.AreEqual(5, heap1.Count);
+            
+            System.Console.WriteLine(heap1.ExtractMax() + " Should be 4");
+            // Assert.AreEqual(4, heap1.ExtractMax());
 
-            heap0.Update(130, 125);
-            System.Console.WriteLine(heap0.Count);
-            System.Console.WriteLine(heap0.Contains(130));
-            System.Console.WriteLine(heap0.Contains(125));
-            // Assert.AreEqual(5, heap0.Count);
-            // Assert.IsFalse(heap0.Contains(130));
-            // Assert.IsTrue(heap0.Contains(125));
+            
 
-            heap0.Update(90, 95);
-            System.Console.WriteLine(heap0.Count);
-            System.Console.WriteLine(heap0.Contains(90));
-            System.Console.WriteLine(heap0.Contains(95));
-            // Assert.AreEqual(5, heap0.Count);
-            // Assert.IsFalse(heap0.Contains(90));
-            // Assert.IsTrue(heap0.Contains(95));
+            // Assert.AreEqual(4, heap1.Count);
+            System.Console.WriteLine(heap1.Count + " Should be 4");
 
-            heap0.Update(160, 50);
-            System.Console.WriteLine(heap0.Count);
-            System.Console.WriteLine(heap0.Contains(160));
-            System.Console.WriteLine(heap0.Contains(50));
-            System.Console.WriteLine(heap0.Peek());
-            // Assert.AreEqual(5, heap0.Count);
-            // Assert.IsFalse(heap0.Contains(160));
-            // Assert.IsTrue(heap0.Contains(50));
-            // Assert.AreEqual(50, heap0.Peek());
+            // Assert.AreEqual(3, heap1.ExtractMax());
+            System.Console.WriteLine(heap1.ExtractMax() + " Should be 3");
 
-            // Assert.Throws<InvalidOperationException>(() => { heap0.Update(0, 10); });
+            // Assert.AreEqual(3, heap1.Count);
+            System.Console.WriteLine(heap1.Count + " Should be 3");
+
+            // Assert.AreEqual(2, heap1.ExtractMax());
+            System.Console.WriteLine(heap1.ExtractMax() + " Should be 2");
+
+            // Assert.AreEqual(2, heap1.Count);
+            System.Console.WriteLine(heap1.Count + " Should be 2");
+
+            // Assert.AreEqual(1, heap1.ExtractMax());
+            System.Console.WriteLine(heap1.ExtractMax() + " Should be 1");
+
+            // Assert.AreEqual(1, heap1.Count);
+            System.Console.WriteLine(heap1.Count + " Should be 1");
+
+            // Assert.AreEqual(0, heap1.ExtractMax());
+            System.Console.WriteLine(heap1.ExtractMax() + " Should be 0");
+
+            // Assert.AreEqual(0, heap1.Count);
+            System.Console.WriteLine(heap1.Count + " Should be 0");
+
+            // Assert.Throws<InvalidOperationException>(() => heap1.ExtractMax());
+            System.Console.WriteLine(heap1.ExtractMax() + " Should be InvalidOperationException");
+
+            // Assert.AreEqual(0, heap1.Count);
+            System.Console.WriteLine(heap1.Count + " Should be 0");
+
+            // Assert.Throws<InvalidOperationException>(() => heap1.ExtractMax());
+            System.Console.WriteLine(heap1.ExtractMax() + " Should be InvalidOperationException");
+
+            // Assert.AreEqual(0, heap1.Count);   
+            System.Console.WriteLine(heap1.Count + " Should be 0");
+
     }
 }
 
