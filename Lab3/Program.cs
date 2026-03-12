@@ -5,15 +5,16 @@ class Program
 {
     static void Main(string[] args)
     {
+        MaxHeap<int> heap1 = new MaxHeap<int>();
 
-            int[] array = { 1, 2, 3, 4, 5, 6, 7 };
-            MinHeap<int> heap1 = new MinHeap<int>(array);
-            System.Console.WriteLine(heap1.ExtractMax());
-            System.Console.WriteLine(heap1.ExtractMax());
-            System.Console.WriteLine(heap1.ExtractMax());
-            // Assert.AreEqual(7, heap1.ExtractMax());
-            // Assert.AreEqual(6, heap1.ExtractMax());
-            // Assert.AreEqual(5, heap1.ExtractMax());
+        // heap1.Add(4);
+        // heap1.Add(3);
+        // heap1.Add(2);
+        // heap1.Add(1);
+        // heap1.Add(0);
+        // Console.WriteLine(heap1.Count);
+
+        // Console.WriteLine(heap1.ExtractMax());
         
     }
 }

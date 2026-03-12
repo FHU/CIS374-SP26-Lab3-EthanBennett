@@ -21,7 +21,11 @@ public class MinHeap<T> where T : IComparable<T>
 
         if (initialArray == null) return;
 
-        foreach (var item in initialArray) Add(item);
+        foreach (var item in initialArray)
+        {
+            Add(item);
+        }
+
     }
 
 
@@ -33,8 +37,9 @@ public class MinHeap<T> where T : IComparable<T>
     {
         if (IsEmpty)
         {
-            throw new IndexOutOfRangeException();
+            throw new InvalidOperationException();
         }
+
         return array[0];
     }
 
@@ -53,7 +58,6 @@ public class MinHeap<T> where T : IComparable<T>
         {
             DoubleArrayCapacity();
         }
-
     }
 
     public T Extract()
@@ -63,32 +67,11 @@ public class MinHeap<T> where T : IComparable<T>
 
     /// <summary>
     /// Removes and returns the max item in the min-heap.
-    /// Time complexity: O( ? )
+    /// Time complexity: O( n )
     /// </summary>
     public T ExtractMax()
     {
-        if (IsEmpty)
-        throw new IndexOutOfRangeException();
-
-    int maxIndex = Count / 2;
-
-    // Search leaves for max
-    for (int i = Count / 2; i < Count; i++)
-    {
-        if (array[i].CompareTo(array[maxIndex]) > 0)
-        {
-            maxIndex = i;
-        }
-    }
-
-    T maxValue = array[maxIndex];
-
-    Swap(maxIndex, Count - 1);
-    Count--;
-
-    TrickleDown(maxIndex);
-
-    return maxValue;
+        return default;
     }
 
     // TODO
@@ -100,21 +83,21 @@ public class MinHeap<T> where T : IComparable<T>
     {
         if (IsEmpty)
         {
-            throw new IndexOutOfRangeException();
+            throw new InvalidOperationException();
         }
-        // save min from the root
+
+        // save the min from the root
         T min = array[0];
 
         // swap the min with the last item
         array[0] = array[Count - 1];
 
-        //remove the last item
-        Count--; //This removes the item from the count of our array
+        // remove the "last" item
+        Count--;
 
-        // trickle down from the root
+        // trickle down from root
         TrickleDown(0);
 
-        // return the min
         return min;
     }
 
@@ -131,6 +114,7 @@ public class MinHeap<T> where T : IComparable<T>
                 return true;
             }
         }
+
         return false;
     }
 
